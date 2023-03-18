@@ -44,6 +44,32 @@ class Photos{
 }
 
 
+
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+      },
+      child: Container(
+        height: 50.0,
+        padding: const EdgeInsets.all(8.0),
+        margin: const EdgeInsets.symmetric(horizontal: 5.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5.0),
+          color: Color.fromARGB(255, 195, 122, 74),
+        ),
+        child: const Center(
+          child: Text('Engage'),
+        ),
+      ),
+    );
+  }
+
+
+
+
+
 void main() => runApp(const MyApp());
 
 
@@ -53,6 +79,8 @@ class MyApp extends StatefulWidget {
   @override
   State<MyApp> createState() => _MyAppState();
 }
+
+
 
 class _MyAppState extends State<MyApp> {
   late Future<Photos> futurePhotos;
