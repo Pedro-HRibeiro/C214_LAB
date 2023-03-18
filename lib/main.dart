@@ -68,7 +68,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Photos (Fotos)',
       theme: ThemeData(
-        primarySwatch: Colors.green),
+        primarySwatch: Colors.blue),
         home: Scaffold(
         appBar: AppBar(
           title: const Text('Photos (Fotos)'),
