@@ -3,22 +3,19 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-
 Future<Photos> fetchPhotos() async {
-  final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/photos/1'));
+  final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/photos/5'));
 
   if (response.statusCode == 200) {
     return Photos.fromJson(jsonDecode(response.body));
-  } 
-
-  else {
+  } else {
     throw Exception('Falha para carregar as fotos');
   }
 }
 
 class Photos{
-  final String albumId;
-  final String id;
+  final int albumId;
+  final int id;
   final String titulo;
   final String url;
   final String thumbnailUrl;
@@ -31,56 +28,25 @@ class Photos{
     required this.thumbnailUrl,
   });
 
-
   factory Photos.fromJson(Map<String, dynamic> json) {
     return Photos(
-      albumId: json['albumId'],
-      id: json['id'],
-      titulo: json['titulo'],
-      url: json['url'],
-      thumbnailUrl: json['thumbnailUrl']
+        albumId: json['albumId'],
+        id: json['id'],
+        titulo: json['title'],
+        url: json['url'],
+        thumbnailUrl: json['thumbnailUrl']
     );
   }
 }
 
-
-
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-      },
-      child: Container(
-        height: 50.0,
-        padding: const EdgeInsets.all(8.0),
-        margin: const EdgeInsets.symmetric(horizontal: 5.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5.0),
-          color: Color.fromARGB(255, 195, 122, 74),
-        ),
-        child: const Center(
-          child: Text('Engage'),
-        ),
-      ),
-    );
-  }
-
-
-
-
-
 void main() => runApp(const MyApp());
 
-
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
-
-
 
 class _MyAppState extends State<MyApp> {
   late Future<Photos> futurePhotos;
@@ -94,12 +60,13 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Photos (Fotos)',
+      title: 'Arquivos das Fotos',
       theme: ThemeData(
-        primarySwatch: Colors.blue),
-        home: Scaffold(
+        primarySwatch: Colors.purple
+      ),
+      home: Scaffold(
         appBar: AppBar(
-          title: const Text('Photos (Fotos)'),
+          title: const Text('Arquivos das Fotos:'),
         ),
         body: Center(
           child: FutureBuilder<Photos>(
@@ -108,8 +75,8 @@ class _MyAppState extends State<MyApp> {
               if (snapshot.hasData) {
                 return Column(
                   children: [
-                    Text(snapshot.data!.albumId),
-                    Text(snapshot.data!.id),
+                    Text(snapshot.data!.albumId.toString()),
+                    Text(snapshot.data!.id.toString()),
                     Text(snapshot.data!.titulo),
                     Text(snapshot.data!.url),
                     Text(snapshot.data!.thumbnailUrl)
