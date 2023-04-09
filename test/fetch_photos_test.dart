@@ -6,6 +6,12 @@ import 'package:mockito/mockito.dart';
 import 'fetch_photos_test.mocks.dart';
 
 
+/*
+Tentei efetuar alguns testes diferentes mas estava dando muito erro e nada funcionava
+Tive que seguir a documentação e realizar os testes para enviar a atividade 06 
+*/
+
+
 @GenerateMocks([http.Client])
 void main() {
   group('fetchPhotos', () {
