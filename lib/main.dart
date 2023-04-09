@@ -2,16 +2,22 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
-Future<Photos> fetchPhotos() async {
-  final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/photos/5'));
+//ok
+Future<Photos> fetchPhotos(http.Client client) async {
+  final response = await client
+      .get(Uri.parse('https://jsonplaceholder.typicode.com/photos/1'));
 
   if (response.statusCode == 200) {
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
     return Photos.fromJson(jsonDecode(response.body));
   } else {
-    throw Exception('Falha para carregar as fotos');
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load album');
   }
 }
+
 
 class Photos{
   final int albumId;
@@ -49,12 +55,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late Future<Photos> futurePhotos;
+  late final Future<Photos> futurePhotos;
 
   @override
   void initState() {
     super.initState();
-    futurePhotos = fetchPhotos();
+    futurePhotos = fetchPhotos(http.Client());
   }
 
 @override
@@ -113,16 +119,17 @@ class TextEx extends StatelessWidget{
         ),
         body: Center(
           child: FutureBuilder<Photos>(
-            future: fetchPhotos(),
+            future: fetchPhotos(http.Client()),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(snapshot.data!.albumId.toString()),
-                    Text(snapshot.data!.id.toString()),
-                    Text(snapshot.data!.titulo),
-                    Text(snapshot.data!.url),
-                    Text(snapshot.data!.thumbnailUrl)
+                    Text('album id: ${snapshot.data!.albumId}'),
+                    Text('user id: ${snapshot.data!.id}'),
+                    Text('Titulo: ${snapshot.data!.titulo}'),
+                    Text('URL: ${snapshot.data!.url}'),
+                    Text('thumbnailUrl: ${snapshot.data!.thumbnailUrl}'),
                   ],
                 );
               } else if (snapshot.hasError) {
@@ -137,51 +144,3 @@ class TextEx extends StatelessWidget{
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-/*  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Arquivos das Fotos',
-      theme: ThemeData(
-        primarySwatch: Colors.purple
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Arquivos das Fotos:'),
-        ),
-        body: Center(
-          child: FutureBuilder<Photos>(
-            future: futurePhotos,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Column(
-                  children: [
-                    Text(snapshot.data!.albumId.toString()),
-                    Text(snapshot.data!.id.toString()),
-                    Text(snapshot.data!.titulo),
-                    Text(snapshot.data!.url),
-                    Text(snapshot.data!.thumbnailUrl)
-                  ],
-                );
-              } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
-              }
-              // By default, show a loading spinner.
-              return const CircularProgressIndicator();
-            },
-          )
-        ),
-      ),
-    );
-  }
-}*/
-
